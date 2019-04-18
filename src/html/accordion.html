@@ -3,10 +3,10 @@
 <head>
 	<meta charset="utf-8">	
 	<title>手风琴效果</title>
-	<link rel="stylesheet" type="text/css" href="../css/accoridon.css">
+	<link rel="stylesheet" type="text/css" href="../css/accordion.css">
 </head>
 <body>
-	<div class="accoridon">
+	<div class="accordion">
 		<div class="panel">
 			<div class="panel-header">Tab1</div>
 			<div class="panel-body current">cont1</div>
@@ -20,18 +20,9 @@
 			<div class="panel-body">cont3</div>
 		</div>
 	</div>
+	<script type="text/javascript" src="../js/accordion.js"></script>
 	<script type="text/javascript">
-		(function (win, doc) {
-			var panels = document.getElementsByClassName('panel'),
-				len = panels.length;
-			for (var i = 0; i < len - 1; i++) {
-				panels[i].onclick = function () {
-					this.style.height = 30 + 'px';
-					console.log(this);
-				}
-			}
-
-		})(window, document)
+		accordion()
 	</script>
 </body>
 </html>
