@@ -10,9 +10,14 @@ module.exports = (function () {
 
 		},
 		setConfig: function(config) {
-			var defaultCnfig = {
-				
+			var defaultConfig = {
+				count: 5,
+				curIndex: 1,
+				changMethod: 'default'
 			}
+		},
+		setNode: function (num) {
+			
 		}
 	}
 
