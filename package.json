@@ -1,0 +1,33 @@
+{
+  "name": "js_tools",
+  "version": "1.0.0",
+  "description": "js_tools",
+  "main": "index.js",
+  "scripts": {
+    "test": "",
+    "start": "webpack --mode development",
+    "cover": "istanbul cover node_modules/mocha/bin/_mocha",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YcodeMan/js_tools.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YcodeMan/js_tools/issues"
+  },
+  "homepage": "https://github.com/YcodeMan/js_tools#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.3",
+    "istanbul": "^0.4.5",
+    "jsdom": "^14.0.0",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^6.1.3",
+    "mocha-lcov-reporter": "^1.3.0",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.0"
+  }
+}
