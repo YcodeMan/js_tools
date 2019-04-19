@@ -12,7 +12,7 @@ module.exports = (function (win, doc) {
 		constructor: Accordion,
 		init: function () {
 			this.setNode(3);
-			console.log(this.opts)
+			
 		},
 		setConfig: function(config) {
 			var defaultConfig = {
@@ -59,7 +59,6 @@ module.exports = (function (win, doc) {
 
 return win.accordion = function (options) {
 	var optinons = optinons || {};
-	console.log(123);
 	new Accordion(options).init();
 }
 
