@@ -4,7 +4,7 @@
   "description": "js_tools",
   "main": "index.js",
   "scripts": {
-    "test": "",
+    "test": "mocha test",
     "start": "webpack --mode development",
     "server": "webpack-dev-server --open",
     "cover": "istanbul cover node_modules/mocha/bin/_mocha",
