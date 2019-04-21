@@ -22,12 +22,14 @@ module.exports = (function (win, doc) {
 				]);
 			this.setBodyContent();
 			this.datainit();
+			this.on();
 			return this;
 		},
 		setConfig: function(config) {
 			var defaultConfig = {
 				count: 5,
 				curIndex: 3,
+				mouse: 'click',
 				changMethod: 'default'
 			}
 			for (var i in config) {
@@ -44,8 +46,8 @@ module.exports = (function (win, doc) {
 				headerH = this.panel_headers[0].css('height'),
 				css = Element.prototype.css;
 				css.call(this.panel_bodys, {
-					height: (containerH - headerH * this.count) + 'px',
-					lineHeight: (containerH - headerH * this.count) + 'px'
+					height: (containerH - headerH * this.count),
+					lineHeight: (containerH - headerH * this.count) 
 				});
 				
 			switch (this.changMethod) {
@@ -61,9 +63,33 @@ module.exports = (function (win, doc) {
 				css = Element.prototype.css;
 			switch (this.changMethod) {
 				case 'default':
-					css(this.panel_bodys, {display: 'none'});
+					css.call(this.panel_bodys, {display: 'none'});
 					this.panel_bodys[index].css({display: 'block'})
 			} 
+		},
+		changeData: function (index) {
+			var index = index - 1,
+				css = Element.prototype.css;
+			
+			switch (this.changMethod) {
+				case 'default':
+				css.call(this.panel_bodys, {display: 'none'});
+				this.panel_bodys[index].css({display: 'block'})
+			}
+		},
+		on: function() {
+			var css = Element.prototype.css;
+			if ( this.opts.mouse === 'click') {
+				var _this = this;
+				this.container.addEventListener('click', function(event) {
+					var e = event || window.event,
+						target = e.target || e.srcElement;
+					if (target.hasClass('panel-header')) {
+						css.call(_this.panel_bodys,{display: 'none'});
+						target.nextElementSibling.css({display: 'block'});
+					}
+				})
+			}
 		},
 		setNode: function (num) {
 			var count = num,
