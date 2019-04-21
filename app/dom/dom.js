@@ -1,24 +1,20 @@
 
-Object.defineProperties(Element.prototype, {
-			addClass: {
-				value: addClass,
-				writable: false,
-				configurable: true,
-				enumerable: false
+var cssUnit = /px|em|rem|vh|vw|ex$/,
+	posotion = /left|top|right|bottom|height|lineHeight|width$/;
 
-			},
-			removerClass: {
-				value: removeClass,
-				writable: false,
-				configurable: true,
-				enumerable: false
-			},
-			css: {
-				value: css,
-				writable: false,
-				configurable: true,
-				enumerable: false
-			}
+valueDesc = function (value) {
+	return {
+		value: value,
+		writable: true,
+		configurable: true,
+		enumerable: false
+	}
+}
+Object.defineProperties(Element.prototype, {
+			addClass: valueDesc(addClass),
+			removerClass: valueDesc(removeClass),
+			hasClass: valueDesc(hasClass),
+			css: valueDesc(css),
 		}
 )
 
@@ -49,36 +45,42 @@ function css(attr, value) {
 	var len = this.length || 0;
 	if (len > 0) {
 		for(var i = 0; i < len; i++) {
-			this[i] = this[i].css(attr, value);
+			this[i].css(attr, value);
 		}
 	} else {
+
 		if (type(attr) === 'object') {
-			for (var k in attr) {
-				this.style[k] = attr[k];
+			for (var key in attr) {
+				this.style[key] = addCssUnit(key, attr[key]);
 			}
 		} else if (typeof attr === 'string' && !value) {
 			return  removeCssUnit(getComputedStyle(this, null)[attr]);
 		} else if (typeof attr === 'string' && value) {
-			this.style[attr] = value;
+			this.style[attr] = addCssUnit(attr, value);
 		}
 	}
 	return this;
 }
 function removeCssUnit(value) {
-	var reg = /px|em|rem|vh|vw|ex$/;
-	if (reg.test(value)) {
+	if (cssUnit.test(value)) {
 		return parseInt(value);
 	}
 	return value;
 }
-
-
-Object.defineProperty(Object.prototype, 'type',{
-	value: type,
-	writable: true,
-	configurable: true,
-	enumerable: false
-});
+function addCssUnit(key, value) {
+	if (posotion.test(key)) {
+		return cssUnit.test(value) ? value : value + 'px';
+	}
+	return value;
+}
+function hasClass(className) {
+	var reg = new RegExp("(\\s|^)" + className +"(\\s|$)");
+	if (reg.test(this.className)) {
+		return true;
+	}
+	return false;
+}
+Object.defineProperty(Object.prototype, 'type', valueDesc(type));
 var objType = {
 	'[object Boolean]': 'boolean',
 	'[object Number]': 'number',
