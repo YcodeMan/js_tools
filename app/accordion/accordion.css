@@ -26,6 +26,9 @@ div {
 	background-color: #ffab3f;
 	border-bottom: 1px solid #dcc;
 }
+.panel-header.current {
+	background-color: #13ccd5;
+}
 .panel .panel-body{
 	overflow: auto;
     display: block;
