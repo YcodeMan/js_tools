@@ -1,18 +1,21 @@
 
 var cssUnit = /px|em|rem|vh|vw|ex$/,
-	posotion = /left|top|right|bottom|height|lineHeight|width$/;
-
-valueDesc = function (value) {
-	return {
-		value: value,
-		writable: true,
-		configurable: true,
-		enumerable: false
-	}
+	cssToHump = /\-([a-z])/g,
+	posotion = /left|top|right|bottom|height|width|lineHeight$/,
+	valueDesc = function (value) {
+		return {
+			value: value,
+			writable: true,
+			configurable: true,
+			enumerable: false
+		}
+	};
+function place(match, $1) {
+	return $1.toUpperCase();
 }
 Object.defineProperties(Element.prototype, {
 			addClass: valueDesc(addClass),
-			removerClass: valueDesc(removeClass),
+			removeClass: valueDesc(removeClass),
 			hasClass: valueDesc(hasClass),
 			css: valueDesc(css),
 		}
@@ -33,12 +36,14 @@ function removeClass(className) {
 	var len = this.length || 0;
 	if (len > 0) {
 		for (var i = 0; i < len; i++) {
-			this[i] = this[i].className = this[i].className.replace( 
+			this[i].className = this[i].className.replace( 
 					new RegExp("(\\s|^)" + className + "(\\s|$)" ), "");	
 		}
-	}
-	this.className = this.className.replace( 
+	} else {
+		this.className = this.className.replace( 
 					new RegExp("(\\s|^)" + className + "(\\s|$)" ), "");
+	}
+	
 	return this;					
 }
 function css(attr, value) {
@@ -51,12 +56,14 @@ function css(attr, value) {
 
 		if (type(attr) === 'object') {
 			for (var key in attr) {
-				this.style[key] = addCssUnit(key, attr[key]);
+				
+				this.style[key.replace(cssToHump, place)] = addCssUnit(key, attr[key]);
 			}
 		} else if (typeof attr === 'string' && !value) {
-			return  removeCssUnit(getComputedStyle(this, null)[attr]);
+
+			return  removeCssUnit(getComputedStyle(this, null)[attr.replace(cssToHump, place)]);
 		} else if (typeof attr === 'string' && value) {
-			this.style[attr] = addCssUnit(attr, value);
+			this.style[attr.replace(cssToHump, place)] = addCssUnit(attr, value);
 		}
 	}
 	return this;

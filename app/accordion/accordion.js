@@ -1,7 +1,7 @@
 const dom = require('../dom/dom.js');
 
 module.exports = (function (win, doc) {
-
+	var css = Element.prototype.css;
 	function Accordion(options) {
 		this.opts = this.setConfig(options);
 		this.changMethod = this.opts.changMethod;
@@ -43,11 +43,11 @@ module.exports = (function (win, doc) {
 			var count = this.count;
 				len = this.panel_bodys.length,
 				containerH = this.container.css('height'),
-				headerH = this.panel_headers[0].css('height'),
-				css = Element.prototype.css;
+				headerH = this.panel_headers[0].css('height');
+				
 				css.call(this.panel_bodys, {
-					height: (containerH - headerH * this.count),
-					lineHeight: (containerH - headerH * this.count) 
+					'height': (containerH - headerH * this.count),
+					'line-height': (containerH - headerH * this.count) 
 				});
 				
 			switch (this.changMethod) {
@@ -59,8 +59,8 @@ module.exports = (function (win, doc) {
 		datainit: function () {
 			
 			var index = (this.opts.curIndex > this.count 
-						? this.count : this.opts.curIndex) - 1,
-				css = Element.prototype.css;
+						? this.count : this.opts.curIndex) - 1;
+				this.panel_headers[index].addClass('current');
 			switch (this.changMethod) {
 				case 'default':
 					css.call(this.panel_bodys, {display: 'none'});
@@ -68,8 +68,7 @@ module.exports = (function (win, doc) {
 			} 
 		},
 		changeData: function (index) {
-			var index = index - 1,
-				css = Element.prototype.css;
+			var index = index - 1;
 			
 			switch (this.changMethod) {
 				case 'default':
@@ -78,14 +77,17 @@ module.exports = (function (win, doc) {
 			}
 		},
 		on: function() {
-			var css = Element.prototype.css;
+			
+				removeClass = Element.prototype.removeClass;
 			if ( this.opts.mouse === 'click') {
 				var _this = this;
 				this.container.addEventListener('click', function(event) {
 					var e = event || window.event,
 						target = e.target || e.srcElement;
 					if (target.hasClass('panel-header')) {
+						removeClass.call(_this.panel_headers, 'current')
 						css.call(_this.panel_bodys,{display: 'none'});
+						target.addClass('current');
 						target.nextElementSibling.css({display: 'block'});
 					}
 				})
