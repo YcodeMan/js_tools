@@ -18,6 +18,7 @@ Object.defineProperties(Element.prototype, {
 			removeClass: valueDesc(removeClass),
 			hasClass: valueDesc(hasClass),
 			css: valueDesc(css),
+			animate: valueDesc(animate)
 		}
 )
 
@@ -45,6 +46,13 @@ function removeClass(className) {
 	}
 	
 	return this;					
+}
+function hasClass(className) {
+	var reg = new RegExp("(\\s|^)" + className +"(\\s|$)");
+	if (reg.test(this.className)) {
+		return true;
+	}
+	return false;
 }
 function css(attr, value) {
 	var len = this.length || 0;
@@ -80,12 +88,36 @@ function addCssUnit(key, value) {
 	}
 	return value;
 }
-function hasClass(className) {
-	var reg = new RegExp("(\\s|^)" + className +"(\\s|$)");
-	if (reg.test(this.className)) {
-		return true;
+//t是走过的时间、d是总时间、c是总路程(灵活的有可能是opacity的变化的值)、b是元素的初始位置
+function linear(t, b, c, d) {
+    return c / d * t + b;
+}
+function animate(target, duration, callback) {
+	var change = {},
+		begin = {},
+		k = null,
+		timer = null,
+		time = 0,
+		_this = this
+		item = null;
+
+	for (kye in target) {
+		begin[key] = this.css(key);
+		change[key] = target[key] - begin[key];
 	}
-	return false;
+	timer = setInterval(function () {
+		time += 10;
+		if (time >= duration) {
+			clearInterval(timer);
+			timer = null;
+			_this.css(target);
+			typeof callback === 'function' ? callback() : null;
+		}
+		if (item in target) {
+			var current = linear(time, begin[item], change[item], duration);
+			_this.css(item , current);
+		}
+	})
 }
 Object.defineProperty(Object.prototype, 'type', valueDesc(type));
 var objType = {
