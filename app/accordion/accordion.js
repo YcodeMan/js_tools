@@ -4,6 +4,7 @@ module.exports = (function (win, doc) {
 	var css = Element.prototype.css,
 		removeClass = Element.prototype.removeClass,
 		addClass = Element.prototype.addClass;
+		animate = Element.prototype.animate;
 	function Accordion(options) {
 		this.opts = this.setConfig(options);
 		this.changMethod = this.opts.changMethod;
@@ -78,11 +79,13 @@ module.exports = (function (win, doc) {
 			this.panel_headers[index].addClass('current');
 			switch (this.changMethod) {
 				case 'default':
-					css.call(this.panel_bodys, {display: 'none'});
+					/*css.call(this.panel_bodys, {display: 'none'});
 					this.panel_bodys[index].css({display: 'block'});
-					break;
+					break;*/
 				case 'animate':
-					
+					css.call(this.panel_bodys, {'display': 'none'});
+					this.panel_bodys[index].css({'display': 'block'});
+					this.panel_bodys[index].animate({'height': 150});
 			}
 		},
 		on: function() {
