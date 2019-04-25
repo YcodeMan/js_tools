@@ -1,7 +1,9 @@
 const dom = require('../dom/dom.js');
 
 module.exports = (function (win, doc) {
-	var css = Element.prototype.css;
+	var css = Element.prototype.css,
+		removeClass = Element.prototype.removeClass,
+		addClass = Element.prototype.addClass;
 	function Accordion(options) {
 		this.opts = this.setConfig(options);
 		this.changMethod = this.opts.changMethod;
@@ -22,7 +24,9 @@ module.exports = (function (win, doc) {
 				]);
 			this.setBodyContent();
 			this.datainit();
+			this.setIndex(this.panel_headers);
 			this.on();
+			
 			return this;
 		},
 		setConfig: function(config) {
@@ -68,27 +72,29 @@ module.exports = (function (win, doc) {
 			} 
 		},
 		changeData: function (index) {
-			var index = index - 1;
-			
+			var index = index;
+				
+			removeClass.call(this.panel_headers, 'current');	
+			this.panel_headers[index].addClass('current');
 			switch (this.changMethod) {
 				case 'default':
-				css.call(this.panel_bodys, {display: 'none'});
-				this.panel_bodys[index].css({display: 'block'})
+					css.call(this.panel_bodys, {display: 'none'});
+					this.panel_bodys[index].css({display: 'block'});
+					break;
+				case 'animate':
+					
 			}
 		},
 		on: function() {
 			
-				removeClass = Element.prototype.removeClass;
+				
 			if ( this.opts.mouse === 'click') {
 				var _this = this;
 				this.container.addEventListener('click', function(event) {
 					var e = event || window.event,
 						target = e.target || e.srcElement;
 					if (target.hasClass('panel-header')) {
-						removeClass.call(_this.panel_headers, 'current')
-						css.call(_this.panel_bodys,{display: 'none'});
-						target.addClass('current');
-						target.nextElementSibling.css({display: 'block'});
+						_this.changeData(target.index);
 					}
 				})
 			}
@@ -167,7 +173,16 @@ module.exports = (function (win, doc) {
 				elems[m].innerHTML = defaultConfig[m];
 			}
 			return this;
+		},
+		setIndex: function (elems) {
+			var i = 0;
+				len = elems.length;
+			for (;i < len; i++) {
+				elems[i].index = i;
+			}
+			return this;
 		}
+
 	}
 
 
