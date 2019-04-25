@@ -101,7 +101,7 @@ function animate(target, duration, callback) {
 		_this = this
 		item = null;
 
-	for (kye in target) {
+	for (key in target) {
 		begin[key] = this.css(key);
 		change[key] = target[key] - begin[key];
 	}
