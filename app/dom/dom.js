@@ -54,27 +54,21 @@ function hasClass(className) {
 	}
 	return false;
 }
-function css(attr, value) {
-	var len = this.length || 0;
-	if (len > 0) {
-		for(var i = 0; i < len; i++) {
-			this[i].css(attr, value);
-		}
-	} else {
-
-		if (type(attr) === 'object') {
-			for (var key in attr) {
-				
-				this.style[key.replace(cssToHump, place)] = addCssUnit(key, attr[key]);
+function css(attr, val) {
+	var i = 0, len = this.length || 0;
+	for (; i < len; i++) {
+		if (val == undefined) {
+			if (typeof attr === 'object') {
+				for (var key in attr) {
+					this.css(key, attr[key]);
+				}
+			} else if (typeof attr === 'string') {
+				return getComputedStyle(this[i])[attr];
 			}
-		} else if (typeof attr === 'string' && !value) {
-
-			return  removeCssUnit(getComputedStyle(this, null)[attr.replace(cssToHump, place)]);
-		} else if (typeof attr === 'string' && value) {
-			this.style[attr.replace(cssToHump, place)] = addCssUnit(attr, value);
+		} else {
+			this[i].style[attr] = val;
 		}
 	}
-	return this;
 }
 function removeCssUnit(value) {
 	if (cssUnit.test(value)) {
