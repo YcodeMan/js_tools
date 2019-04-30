@@ -55,7 +55,8 @@ function hasClass(className) {
 	return false;
 }
 function css(attr, val) {
-	for (var i = 0, len = this.length; i < len; i++) {
+	var i = 0, len = this.length || 0;
+	for (; i < len; i++) {
 		if (val == undefined) {
 			if (typeof attr === 'object') {
 				for (var key in attr) {
